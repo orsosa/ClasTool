@@ -100,7 +100,7 @@ int main(int argc, char **argv){
   }
 
   iCount = 0;
-  while( (bosRead(bosFileHandle,bcs_.iw,"E")==0) && (iCount<nEventsToWrite)){
+  while((bosRead(bosFileHandle,bcs_.iw,"E")==0)&&(iCount<nEventsToWrite)){
 
     iCount++;
 

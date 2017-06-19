@@ -65,7 +65,7 @@ using namespace std;
 
 #include "TObject.h"
 #include "TString.h"
-#include "TMatrix.h"
+#include "TMatrixD.h"
 
 class TTBERClass: public TObject{
 
@@ -110,9 +110,18 @@ class TTBERClass: public TObject{
   ~TTBERClass(){};
   TTBERClass(TTBERClass *TmpTBER); // copy constructor.
 
-  TMatrixF Get_ErrMatrix();
-  void  Get_ErrMatrix(TMatrixF *f);
-  void  Get_ErrMatrix(TMatrixF &f);
+	Float_t Get_q_over_p() { return q_over_p; };
+	Float_t Get_lambda() { return lambda; };
+	Float_t Get_phi() { return phi; };
+	Float_t Get_d0() { return d0; };
+	Float_t Get_z0() { return z0; };
+	Float_t Get_chi2() { return chi2; };
+	Float_t Get_layinfo1() { return layinfo1; };
+	Float_t Get_layinfo2() { return layinfo2; };	
+  
+  TMatrixD Get_ErrMatrix();
+  void  Get_ErrMatrix(TMatrixD *f);
+  void  Get_ErrMatrix(TMatrixD &f);
 
 
   void Print(void);   // Print info on class.

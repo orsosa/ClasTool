@@ -16,11 +16,11 @@
 #include "TECPBClass.h"
 
 #include "clasbanks.h"
-
+#include "tree_str.h"
 
 // Function Prototype 
 void  Fill_ECPB_Bank(TECPBClass *gcECPB,ECPB *pECPB , int nrow);
-
+void  Fill_ECPB_Bank(TECPBClass *gcECPB, tree_str* pECPB, int nrow);
 
 void  Fill_ECPB_Bank(TECPBClass *gcECPB, ECPB *pECPB , int nrow){
 gcECPB->Scht  = pECPB->get_ScHt(nrow);
@@ -42,6 +42,25 @@ gcECPB->Status  = pECPB->get_Status(nrow);
 
 }
 
+void  Fill_ECPB_Bank(TECPBClass *gcECPB, tree_str* pECPB, int nrow){
+gcECPB->Scht  = pECPB->ec_sect[nrow]*100 + pECPB->ec_whol[nrow]; //100*sector+Whole_Hit_ID in ECHB 
+gcECPB->Etot  = pECPB->etot[nrow];
+gcECPB->Ein  = pECPB->ec_ei[nrow];
+gcECPB->Eout  = pECPB->ec_eo[nrow];
+gcECPB->Time  = pECPB->ec_t[nrow];
+gcECPB->Path  = pECPB->ec_r[nrow];
+gcECPB->X  = pECPB->ech_x[nrow];
+gcECPB->Y  = pECPB->ech_y[nrow];
+gcECPB->Z  = pECPB->ech_z[nrow];
+gcECPB->M2_hit  = pECPB->ec_m2[nrow];
+gcECPB->M3_hit  = pECPB->ec_m3[nrow];
+gcECPB->M4_hit  = pECPB->ec_m4[nrow];
+gcECPB->Innstr  = pECPB->ec_inst[nrow];
+gcECPB->Outstr  = pECPB->ec_oust[nrow];
+gcECPB->Chi2ec  = pECPB->ec_c2[nrow];
+gcECPB->Status  = pECPB->ec_stat[nrow];
+
+}
 
 
 ////////////////////////////////////////////////////////////////////////////////////////

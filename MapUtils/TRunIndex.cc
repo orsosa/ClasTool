@@ -24,12 +24,12 @@ TRunIndex::~TRunIndex(){
 }
 
 TRunIndex::TRunIndex(Int_t fpRunIndexId,Int_t    fpMinRun,
-                     Int_t    fpMaxRun,  
-                     Int_t    fpItemId,
+		     Int_t    fpMaxRun,  
+		     Int_t    fpItemId,
                      Int_t    fpItemValueId,
-                     const char *fpOfficer,
-                     const char *fpTime,
-                     const char *fpComment){
+		     const char *fpOfficer,
+		     const char *fpTime,
+		     const char *fpComment){
 // Constructor Sets Variables 
 //
 
@@ -45,12 +45,12 @@ TRunIndex::TRunIndex(Int_t fpRunIndexId,Int_t    fpMinRun,
 }
 
 void TRunIndex::Set(Int_t fpRunIndexId,Int_t    fpMinRun,
-                    Int_t    fpMaxRun,  
-                    Int_t    fpItemId,
-                    Int_t    fpItemValueId,
-                    const char *fpOfficer,
-                    const char *fpTime,
-                    const char *fpComment){
+		    Int_t    fpMaxRun,  
+		    Int_t    fpItemId,
+		    Int_t    fpItemValueId,
+		    const char *fpOfficer,
+		    const char *fpTime,
+		    const char *fpComment){
   // Sets Variables 
   //
 

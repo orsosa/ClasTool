@@ -96,9 +96,11 @@ TNT10Reader::TNT10Reader(const char *name,const char *title): TChain(name,title)
 
   fTree = new TTree(this->TChain::GetName(),this->TChain::GetTitle());
 
+
   fTree->SetMaxTreeSize(21474836480ULL); // Allow 20 Gbyte files.
 
   gROOT->GetListOfBrowsables()->Add((TChain *)(this),this->TChain::GetName());
+
 
   //
   // These calls are needed then the class is used as stand alone
@@ -111,8 +113,11 @@ TNT10Reader::TNT10Reader(const char *name,const char *title): TChain(name,title)
   InitBranches();
 
   if(!fgPawInit){  // We NEVER want to init PAW twice by accident.
+
     Int_t pawc_size = PAWC_SIZE;
-    hlimit(pawc_size);
+
+    //hlimit(pawc_size);
+
     fgPawInit = kTRUE;
 
     fgLuns = new Int_t[10];

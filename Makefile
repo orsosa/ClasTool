@@ -1,113 +1,97 @@
-#   Makefile for ClasTool #  
+#   Makefile for ClasTool
+#  
+# Notice:
+#
+# At CEBAF you must execute the following before this will compile and link.
+#
+# SETUP YOUR CLAS ENVIRONMENT (setclas LATEST    )
+# SETUP YOUR ROOT ENVIRONMENT (use root/2.22     )
+# LINUX: SETUP EGCS 1.1.1     (use egcs/1.1.1    )
+#
+# Modified: Maurik Holtrop 4/29/2000  ::
+#	Add check for MYSQL_INCLUDE, if not skip those libs.
+#	Add target shlib
+#       Add targer clean
+#
 
-include Makefile_system
+include Makefile_top
 
-# IF you use multiple versions of ROOT, you may want to change $(OS_NAME) to
-# $(OS_NAME)_$(ROOTVERSTION)
-SLIBDIR := slib/$(OS_NAME)
-LIBDIR  := lib/$(OS_NAME)
-BINDIR  := bin/$(OS_NAME)
-
-OBJDIR  := obj/$(OS_NAME)
-DICTDIR := dict/$(OS_NAME)
-DEPDIR  := dep/$(OS_NAME)
-
-SOURCES_DICTS :=
-SOURCES_DEPS  :=
-
-##############################################################################
-
-MODULES  := ClasBanks TClasTool VirtualReader DSTReader FillBank PartSieve \
-	    MapUtils Filter
-
-PROGRAMS := Utils
-
+ALL_DIRS=ClasBanks VirtualReader DSTReader TClasTool FillBank PartSieve
+ALL_DIRS+= MapUtils Filter
+SEARCH_INCLUDES=$(ALL_DIRS)
 # These require a link to the CLAS programs ($CLAS_PACK) to be available, or they are not 
 # needed. Build them with "make extras"
 # These are not a required part of the system.
-EXTRAS   := Gsim NT10Reader
+EXTRAS_DIRS = Gsim NT10Reader
+
+EXE_DIRS = Utils
+
+all: include shlib docs
+
+#  shlib: includes clasbanks virtualreader dstreader nt10reader maputils clastool utils
+
+ALL_INCLUDES_LOC=$(foreach dir,$(SEARCH_INCLUDES),$(filter-out %LinkDef.h ,$(wildcard $(dir)/*.h)))
+ALL_INCLUDES=$(addprefix include/,$(notdir $(ALL_INCLUDES_LOC)))
+
+help:
+	@echo "This is the master makefile for the CLASTOOL package. It calls the individual "
+	@echo "Makefiles in each of the subdirectories. "
+	@echo "To update the 'include' directory execute 'make include'"
+	@echo "To update the dependencies everywhere execute 'make dep'"
+	@echo "To cleanup all object and dictionary files execute 'make clean'"
+	@echo "To cleanup all libraries as well execute 'make distclean'"
+	@echo "To build all the libraries execute 'make'"
+	@echo ""
+	@echo "I think you are running on a " $(OS_NAME) " system. "
+	@echo "so only files for that system will be affected. "
+	@echo ""
+	@echo "SEARCH_INCLUDES = $(SEARCH_INCLUDES)"
+include: $(ALL_INCLUDES_LOC)
+	@echo Remaking the include directory....
+	@test -d include || mkdir -p include
+	@cd include;for i in $(ALL_INCLUDES_LOC); do ln -f -s ../$$i; done
+
+lib: shlib
+
+shlib: 
+	for i in $(ALL_DIRS); do \
+		make -e -C $$i shlib; \
+	done
+
+exe: 
+	for i in $(EXE_DIRS); do \
+		make -e -C $$i exe; \
+	done
+
+extras: 
+	for i in $(EXTRAS_DIRS); do \
+		make -e -C $$i shlib; \
+	done
 
 
-INCLUDES := $(addprefix -I,$(MODULES) $(EXTRAS) $(PROGRAMS))
+$(ALL_DIRS):
+	@make -e -C $@ all
 
-# I just commented this for no compiling reason at all. It slowed down TAB
-# completion for make command in Bash shell, and I don't like that
-#ifdef MYSQL_INCLUDE
-#CXXFLAGS += -D__USE_MYSQL__
-#INCLUDES += -I$(MYSQL_INCLUDE) 
-#endif
+docs: 
+	@make -e -C html docs
 
-vpath %.h $(MODULES) $(EXTRAS) $(PROGRAMS)
-
-##############################################################################
-
-.PHONY: all $(MODULES) $(EXTRAS) $(PROGRAMS) lib shlib
-	
-all: shlib
-
-shlib: checkdirs $(addprefix shlib_,$(MODULES))
-
-lib: checkdirs $(addprefix lib_,$(MODULES))
+dep:
+	for i in $(ALL_DIRS); do \
+		make -e -C $$i dep; \
+	done
 
 
-.PHONY: extras shlib_extras lib_extras
-
-extras: shlib_extras
-
-shlib_extras: checkdirs $(addprefix shlib_,$(EXTRAS))
-
-lib_extras: checkdirs $(addprefix lib_,$(EXTRAS))
-
-
-.PHONY: exe
-
-exe: checkdirs $(PROGRAMS)
-
-
-.PHONY: checkdirs
-
-checkdirs: $(SLIBDIR) $(LIBDIR) $(BINDIR)
-
-$(SLIBDIR) $(LIBDIR) $(BINDIR):
-	@mkdir -p $@
-
-##############################################################################
-
-include Makefile_templates
-
-# Include file module.mk of each directory
-include $(addsuffix /module.mk,$(MODULES) $(EXTRAS) $(PROGRAMS))
-
-# Ensure make do not remove dictionary source files thinking they are
-# intermediate files
-.SECONDARY: $(SOURCES_DICTS)
-
-# Include all dependency files
-ifeq (,$(filter clean ,$(MAKECMDGOALS)))
--include $(SOURCES_DEPS)
-endif
-
-##############################################################################
-
-.PHONY: clean lib_clean shlib_clean exe_clean distclean
-
-# Remove object and dictionary (not dependency) files
 clean:
-	@rm -rf $(addsuffix /$(subst /$(OS_NAME),,$(OBJDIR)),$(MODULES) $(EXTRAS) $(PROGRAMS))  \
-	        $(addsuffix /$(subst /$(OS_NAME),,$(DICTDIR)),$(MODULES) $(EXTRAS) $(PROGRAMS))
+	for i in $(ALL_DIRS) html; do \
+		make -e -C $$i clean; \
+	done
 
-# Remove LIBDIR
-lib_clean:
-	@rm -rf $(subst /$(OS_NAME),,$(LIBDIR))
+distclean:
+	@rm -f include/*.h
+	for i in $(ALL_DIRS) html; do \
+		make -e -C $$i distclean; \
+	done
 
-# Remove SLIBDIR
-shlib_clean:
-	@rm -rf $(subst /$(OS_NAME),,$(SLIBDIR))
+.PHONY: include $(ALL_DIRS)
 
-# Remove BINDIR
-exe_clean:
-	@rm -rf $(subst /$(OS_NAME),,$(BINDIR))
 
-# Remove all generated files (here dependency files are removed)
-distclean: clean lib_clean shlib_clean exe_clean
-	@rm -rf $(addsuffix /$(subst /$(OS_NAME),,$(DEPDIR)),$(MODULES) $(EXTRAS) $(PROGRAMS))

@@ -616,156 +616,156 @@ The code assumes that the zero-index particle is the electron.
 //=======================================================================
 TVERTClass* TClasTool::GetVert(Int_t part1, Int_t part2)
 {
-    //
-    // This function will return a pointer to the correct TVERTClass bank 
-    // that is associated with the two tracks that are pointed to 
-    // by the integer indexes into the EVNT bank, part1 and part2.
-    //
-    // Among other methods, you can locate the correct indexes 
-    // for particle type X, using the TPartSieve::GetIndex()
-    //
+  //
+  // This function will return a pointer to the correct TVERTClass bank 
+  // that is associated with the two tracks that are pointed to 
+  // by the integer indexes into the EVNT bank, part1 and part2.
+  //
+  // Among other methods, you can locate the correct indexes 
+  // for particle type X, using the TPartSieve::GetIndex()
+  //
 
 
-    TDCPBClass *fDCPB;  
-    TEVNTClass *fEVNT;
-    TVERTClass *fVERT; 
-    Int_t track1=-1,track2=-1;
-    Int_t holder; 
-    Int_t NumTracks;
-    Int_t Sigma;
-    Int_t Vertidx;
-    Int_t NRows=0;
+  TDCPBClass *fDCPB;  
+  TEVNTClass *fEVNT;
+  TVERTClass *fVERT; 
+  Int_t track1=-1,track2=-1;
+  Int_t holder; 
+  Int_t NumTracks;
+  Int_t Sigma;
+  Int_t Vertidx;
+  Int_t NRows=0;
 
-    // Get the TrackId from the DCPB Bank
-    // for each particle
-
-
-    if ( (fEVNT = GetEVNT(part1)) ) {
-        if (fEVNT->GetDCStat()>0) {
-            fDCPB = GetDCPB((Int_t) (fEVNT->GetDCidx()));
-            track1 = fDCPB->GetTrackId();
-
-            if ( (fEVNT = GetEVNT(part2)) ) {
-                if (fEVNT->GetDCStat() > 0) {
-                    fDCPB = GetDCPB((Int_t) (fEVNT->GetDCidx()));
-                    track2 = fDCPB->GetTrackId();
-
-                    if (track2<track1) {;           // Track1 must be < Track2 to properly index into
-                        holder = track1;              // the VERT Bank    
-                        track1 = track2;
-                        track2 = holder;
-                    }
-
-                    // This table calculates the number of tracks
-                    // in the VERT bank based on the number of
-                    // rows in the vert bank 
+  // Get the TrackId from the DCPB Bank
+  // for each particle
 
 
-                    NRows = GetNRows("VERT");
-                    if (NRows == 0)
-                        return NULL;
-                    else if (NRows == 1)
-                        return NULL;
-                    else if (NRows == 3)
-                        NumTracks = 2;
-                    else if (NRows == 6)
-                        NumTracks = 3;
-                    else if (NRows == 10)
-                        NumTracks = 4;
-                    else if (NRows == 15)
-                    NumTracks = 5;
-                    else if (NRows == 21)
-                        NumTracks = 6;
-                    else if (NRows == 28)
-                    NumTracks = 7;
-                    else if (NRows == 36)
-                        NumTracks = 8;
-                    else if (NRows == 45)
-                        NumTracks = 9;
-                    else if (NRows == 55)
-                        NumTracks = 10;
-                    else if (NRows == 66)
-                    NumTracks = 11;
-                    else if (NRows == 78)
-                        NumTracks = 12;
-                    else if (NRows == 91)
-                        NumTracks = 13;
-                    else if (NRows == 105)
-                        NumTracks = 14;
-                    else if (NRows == 120)
-                        NumTracks = 15;
-                    else {
-                        cout << "Bad Track Finder!!" << endl;
-                        return (Vert_Error_Handler(NRows,track1,track2));
-                    }
+  if(fEVNT = GetEVNT(part1)){
+    if(fEVNT->GetDCStat()>0){
+      fDCPB = GetDCPB((Int_t)(fEVNT->GetDCidx()));
+      track1 = fDCPB->GetTrackId();
+
+      if(fEVNT = GetEVNT(part2)){
+	if(fEVNT->GetDCStat()>0){
+	  fDCPB = GetDCPB((Int_t)(fEVNT->GetDCidx()));
+	  track2 = fDCPB->GetTrackId();
+
+	  if(track2<track1){;           // Track1 must be < Track2 to properly index into
+	  holder = track1;              // the VERT Bank    
+	  track1 = track2;
+	  track2 = holder;
+	  }
+
+	      // This table calculates the number of tracks
+	      // in the VERT bank based on the number of
+	      // rows in the vert bank 
+
+
+	  NRows = GetNRows("VERT");
+	  if     (NRows == 0)
+	    return NULL;
+	  else if(NRows == 1)
+	    return NULL;
+	  else if(NRows == 3)
+	    NumTracks = 2;
+	  else if(NRows == 6)
+	    NumTracks = 3;
+	  else if(NRows == 10)
+	    NumTracks = 4;
+	  else if(NRows == 15)
+	NumTracks = 5;
+	  else if(NRows == 21)
+	    NumTracks = 6;
+	  else if(NRows == 28)
+	NumTracks = 7;
+	  else if(NRows == 36)
+	    NumTracks = 8;
+	  else if(NRows == 45)
+	    NumTracks = 9;
+	  else if(NRows == 55)
+	    NumTracks = 10;
+	  else if(NRows == 66)
+	NumTracks = 11;
+	  else if(NRows == 78)
+	    NumTracks = 12;
+	  else if(NRows == 91)
+	    NumTracks = 13;
+	  else if(NRows == 105)
+	    NumTracks = 14;
+	  else if(NRows == 120)
+	    NumTracks = 15;
+	  else{
+	    cout<<"Bad Track Finder!!"<<endl;
+	    return(Vert_Error_Handler(NRows,track1,track2));
+	  }
 	  
 	  
-                    // Vertidx is based on the VERT Bank having rows in the order
-                    // (example)     (0)01 (1)02 (2)03 (3)12 (4)13 (5)23
-                    // where in a group the number in () is the row number in the VERT Bank,
-                    // the next number is track1index and the last number is track2index 
+	  // Vertidx is based on the VERT Bank having rows in the order
+	  // (example)     (0)01 (1)02 (2)03 (3)12 (4)13 (5)23
+	  // where in a group the number in () is the row number in the VERT Bank,
+	  // the next number is track1index and the last number is track2index 
 
-//                    Sigma = 0;
-//                    sig = NumTracks - track1;
-//                    while (sig > 0) {
-//                        Sigma += sig;
-//                        sig--;
-//                    }
 
-                    // This table replaces this Sigma loop
+	  //      Sigma = 0;
+	  //      sig = NumTracks - track1;
+	  //      while(sig>0){
+	  //	Sigma += sig;
+	  //	sig--;
+	  //      }
+	  //this table replaces this Sigma loop
 
-                    if ((NumTracks - track1) < 0)
-                        return(Vert_Error_Handler(NRows,track1,track2));
-                    else if ((NumTracks - track1) == 0)
-                        Sigma = 0;
-                    else if ((NumTracks - track1) == 1)
-                        Sigma = 1;
-                    else if ((NumTracks - track1) == 2)
-                        Sigma = 3;
-                    else if ((NumTracks - track1) == 3)
-                        Sigma = 6;
-                    else if ((NumTracks - track1) == 4)
-                        Sigma = 10;
-                    else if ((NumTracks - track1) == 5)
-                        Sigma = 15;
-                    else if ((NumTracks - track1) == 6)
-                        Sigma = 21;
-                    else if ((NumTracks - track1) == 7)
-                        Sigma = 28;
-                    else if ((NumTracks - track1) == 8)
-                        Sigma = 36;
-                    else if ((NumTracks - track1) == 9)
-                        Sigma = 45;
-                    else if ((NumTracks - track1) == 10)
-                        Sigma = 55;
-                    else if ((NumTracks - track1) == 11)
-                        Sigma = 66;
-                    else if ((NumTracks - track1) == 12)
-                        Sigma = 78;
-                    else if ((NumTracks - track1) == 13)
-                        Sigma = 91;
-                    else if ((NumTracks - track1) == 14)
-                        Sigma = 105;
-                    else{
-                        cout << "Bad Sigma!! Numtraks = " << NumTracks << " Track 1 = " << track1<<endl;
-                        return (Vert_Error_Handler(NRows,track1,track2));
-                    }
+	  if((NumTracks - track1) < 0)
+	    return(Vert_Error_Handler(NRows,track1,track2));
+	  else if((NumTracks - track1) == 0)
+	    Sigma = 0;
+	  else if((NumTracks - track1) == 1)
+	    Sigma = 1;
+	  else if((NumTracks - track1) == 2)
+	    Sigma = 3;
+	  else if((NumTracks - track1) == 3)
+	    Sigma = 6;
+	  else if((NumTracks - track1) == 4)
+	    Sigma = 10;
+	  else if((NumTracks - track1) == 5)
+	    Sigma = 15;
+	  else if((NumTracks - track1) == 6)
+	    Sigma = 21;
+	  else if((NumTracks - track1) == 7)
+	    Sigma = 28;
+	  else if((NumTracks - track1) == 8)
+	    Sigma = 36;
+	  else if((NumTracks - track1) == 9)
+	    Sigma = 45;
+	  else if((NumTracks - track1) == 10)
+	    Sigma = 55;
+	  else if((NumTracks - track1) == 11)
+	    Sigma = 66;
+	  else if((NumTracks - track1) == 12)
+	    Sigma = 78;
+	  else if((NumTracks - track1) == 13)
+	    Sigma = 91;
+	  else if((NumTracks - track1) == 14)
+	    Sigma = 105;
+	  else{
+	    cout<<"Bad Sigma!! Numtraks = " << NumTracks <<" Track 1 = " << track1<<endl;
+	    return(	Vert_Error_Handler(NRows,track1,track2));
+	  }
 	  
-                    Vertidx = NRows - Sigma + track2 - track1 -1;
-                    if (Vertidx < NRows) {
-                        fVERT=(TVERTClass *) GetBankRow("VERT",Vertidx);
-                        if (fVERT) {
-                            if (fVERT->GetTrack1Id() == track1 && fVERT->GetTrack2Id() == track2) {
-//                                cout<<"TVERT function successful"<<endl;
-                                return (fVERT);
-                            }
-                            else return (Vert_Error_Handler(NRows,track1,track2)); 
-                        } else return (Vert_Error_Handler(NRows,track1,track2)); 
-                    } else return (Vert_Error_Handler(NRows,track1,track2)); 
-                } else return NULL; 
-            } else return NULL; 
-        } else return NULL;
+	  Vertidx = NRows - Sigma + track2 - track1 -1;
+	  if(Vertidx<NRows){
+	    fVERT=(TVERTClass *) GetBankRow("VERT",Vertidx);
+	    if(fVERT){
+	      if (fVERT->GetTrack1Id() == track1 && fVERT->GetTrack2Id() == track2){
+		// cout<<"TVERT function successful"<<endl;
+		return(fVERT);
+	      }
+	      else return(Vert_Error_Handler(NRows,track1,track2)); 
+	    } else return(Vert_Error_Handler(NRows,track1,track2)); 
+	  } else return(Vert_Error_Handler(NRows,track1,track2)); 
+	} else return NULL; 
+      } else return NULL; 
     } else return NULL;
+  }else return NULL;
 }
 //================================================================================
 

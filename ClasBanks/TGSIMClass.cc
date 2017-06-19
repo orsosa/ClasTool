@@ -1,4 +1,4 @@
-// @(#)ClasTool/ClasBanks:$Name:  $:$Id: TGSIMClass.cc,v 1.5 2007/03/01 22:26:59 holtrop Exp $
+// @(#)ClasTool/ClasBanks:$Name:  $:$Id: TGSIMClass.cc,v 1.6 2011/02/09 21:42:29 cnepali Exp $
 // Author:  Maurik Holtrop <http://www.physics.unh.edu/~maurik>
 
 //____________________ 
@@ -44,6 +44,7 @@ Scstat   =   TmpEVNT->Scstat;
 Ecstat   =   TmpEVNT->Ecstat;
 Lcstat   =   TmpEVNT->Lcstat;
 Status   =   TmpEVNT->Status;
+mass = TmpEVNT->mass;
 }
 
 void   TGSIMClass::Print(){

@@ -16,11 +16,11 @@
 #include "TLCPBClass.h"
 
 #include "clasbanks.h"
-
+#include "tree_str.h"
 
 // Function Prototype 
 void  Fill_LCPB_Bank(TLCPBClass *gcLCPB,LCPB *pLCPB , int nrow);
-
+void  Fill_LCPB_Bank(TLCPBClass *gcLCPB, tree_str* pLCPB, int nrow);
 
 void  Fill_LCPB_Bank(TLCPBClass *gcLCPB, LCPB *pLCPB , int nrow){
 gcLCPB->Scht  = pLCPB->get_ScHt(nrow);
@@ -36,7 +36,19 @@ gcLCPB->Ein  = pLCPB->get_Ein(nrow);
 
 }
 
+void  Fill_LCPB_Bank(TLCPBClass *gcLCPB, tree_str* pLCPB, int nrow){
+gcLCPB->Scht  = pLCPB->lec_sect [nrow]*100 + pLCPB->lec_hit [nrow]; //100*sector+Hit_ID in EC1R
+gcLCPB->Etot  = pLCPB->lec_etot [nrow];
+gcLCPB->Time  = pLCPB->lec_t[nrow];
+gcLCPB->Path  = pLCPB->lec_r [nrow];
+gcLCPB->X  = pLCPB->lec_x [nrow];
+gcLCPB->Y  = pLCPB->lec_y [nrow];
+gcLCPB->Z  = pLCPB->lec_z [nrow];
+gcLCPB->Chi2lc  = pLCPB->lec_c2 [nrow];
+gcLCPB->Status  = pLCPB->lec_stat [nrow];
+gcLCPB->Ein  = pLCPB->lec_ein [nrow];
 
+}
 
 ////////////////////////////////////////////////////////////////////////////////////////
 //     End Of File  Fill_LCPB_Bank.cc

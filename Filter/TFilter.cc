@@ -124,7 +124,7 @@ TTree *TFilter::Create_Out_Tree(TDSTReader *dstread){
   tree=new TTree("CLASEVENT","CLAS Event Tree filtered");
   tree->SetAutoSave(1024*1024*1024);
 
-  TTree *chain =dstread->GetTree();
+  TTree *chain=dstread->GetTree();
 
 #define __BUFSIZE__  16384
   int bufsize = __BUFSIZE__;

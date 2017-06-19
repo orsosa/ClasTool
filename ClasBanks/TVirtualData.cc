@@ -1,4 +1,4 @@
-// @(#)ClasTool/ClasBanks:$Name:  $:$Id: TVirtualData.cc,v 1.6 2007/03/01 22:30:56 holtrop Exp $
+// @(#)ClasTool/ClasBanks:$Name:  $:$Id: TVirtualData.cc,v 1.8 2012/02/08 01:24:57 gavalian Exp $
 // Author:  Maurik Holtrop <http://www.physics.unh.edu/~maurik>
 
 //____________________ 

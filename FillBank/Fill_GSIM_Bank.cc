@@ -16,11 +16,14 @@
 #include "TGSIMClass.h"
 
 #include "clasbanks.h"
-
+#include "tree_str.h"
 
 // Function Prototypes (overloaded)
 void  Fill_GSIM_Bank(TGSIMClass *gcGSIM,PART *pPART , int nrow);
 void  Fill_GSIM_Bank(TGSIMClass *gcGSIM,MCTK *pMCTK, MCVX *pMCVX , int nrow);
+#ifdef GSIM
+void  Fill_GSIM_Bank(TGSIMClass *gcGSIM,tree_str* pPART , int nrow);
+#endif
 
 void  Fill_GSIM_Bank(TGSIMClass *gcGSIM,MCTK *pMCTK, MCVX *pMCVX , int nrow){
 
@@ -93,8 +96,38 @@ void  Fill_GSIM_Bank(TGSIMClass *gcGSIM, PART *pPART , int nrow){
   gcGSIM->Ststat  = 0;// gcGSIM->Ststat  = (UChar_t) pPART->get_STstat(nrow);
   gcGSIM->Status  = 1;// (UChar_t) pPART->get_Status(nrow);  
 }
+#ifdef GSIM
+void  Fill_GSIM_Bank(TGSIMClass *gcGSIM, tree_str *pPART , int nrow){
 
+//  gcGSIM->Id  = TDatabasePDG::Instance()->ConvertGeant3ToPdg( pPART->mcid[nrow] );
+    gcGSIM->Id  = TDatabasePDG::Instance()->ConvertPdgToGeant3( pPART->mcid[nrow] );
+  //  cerr << "ID: " << gcGSIM->Id  << endl;
+  //gcGSIM->Pmom  = pPART->get_Pmom(nrow);
+  //gcGSIM->Mass  = pPART->get_Mass(nrow);
+  gcGSIM->Charge  = (Char_t) pPART->qpart[nrow];// not sure
+  //  gcGSIM->Betta  =  0;// pPART->get_Betta(nrow);
+  Float_t E2=pow(pPART->mcm[nrow],2) + pow(pPART->mcp[nrow],2);
+  if( E2 > 0 ) {
+    gcGSIM->Betta  =  pPART->mcp[nrow] / sqrt(E2);
+  } else {
+    gcGSIM->Betta = 0;
+  }
+  gcGSIM->Px  = pPART->mcp[nrow]*TMath::Sin(TMath::DegToRad()*pPART->mctheta[nrow])*TMath::Cos(TMath::DegToRad()*pPART->mcphi[nrow]);
+  gcGSIM->Py  = pPART->mcp[nrow]*TMath::Sin(TMath::DegToRad()*pPART->mctheta[nrow])*TMath::Sin(TMath::DegToRad()*pPART->mcphi[nrow]);
+  gcGSIM->Pz  = pPART->mcp[nrow]*TMath::Cos(TMath::DegToRad()*pPART->mctheta[nrow]);
+  gcGSIM->X  = pPART->mcvx[nrow];
+  gcGSIM->Y  = pPART->mcvy[nrow];
+  gcGSIM->Z  = pPART->mcvz[nrow];
+  gcGSIM->Dcstat  = 0;
+  gcGSIM->Ccstat  = 0;//(UChar_t) pPART->get_CCstat(nrow);
+  gcGSIM->Scstat  = 0;//(UChar_t) pPART->get_SCstat(nrow);
+  gcGSIM->Ecstat  = 0;//(UChar_t) pPART->get_ECstat(nrow);
+  gcGSIM->Lcstat  = 0;//(UChar_t) pPART->get_LCstat(nrow);
+  gcGSIM->Ststat  = 0;// gcGSIM->Ststat  = (UChar_t) pPART->get_STstat(nrow);
+  gcGSIM->Status  = 1;// (UChar_t) pPART->get_Status(nrow);  
+}
 
+#endif
 ////////////////////////////////////////////////////////////////////////////////////////
 //     End Of File  Fill_GSIM_Bank.cc
 //////////////////////////////////////////////////////////////////////////////////////

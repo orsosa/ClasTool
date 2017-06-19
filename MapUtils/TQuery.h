@@ -54,3 +54,4 @@ ClassDef(TQuery,1) // Class to construct MySQL Queries
 };
 
 #endif
+

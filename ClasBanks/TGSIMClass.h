@@ -80,6 +80,7 @@ const Int_t TGSIMClass__fgGeant_Particle_Id[kG_NParticleTypes]={
 class TGSIMClass: public TVirtualData{
 
 public:
+  Float_t mass;
 
   TGSIMClass(){};
   TGSIMClass(TGSIMClass *TmpEVNT);

@@ -43,9 +43,9 @@ using namespace std;
 #include "TArrayF.h"
 
 
-//#ifndef __MAKEDUMMLIB__
-//#include "TMySQLServer.h"
-//#endif
+#ifndef __MAKEDUMMLIB__
+#include "TMySQLServer.h"
+#endif
 
 #define debugERRORS           0x10
 #define debugQUERYPREVIEW     0x20

@@ -146,7 +146,7 @@ void  TMapUtils::ScanMaps(){
     while((fRow=fResult->Next())){
       cout << "|  " << setw(4) << fRow->GetField(0) << "  " << setw(1) << "|" << "    " << setw(21) << fRow->GetField(1) << "|" << endl;
     }
-    cout << "+--------+-------------------------+" << endl << endl;     
+    cout << "+--------+-------------------------+" << endl << endl;	
   }
   
   delete db;
@@ -174,7 +174,7 @@ void TMapUtils::ScanSystem(const char *tSystem){
   TSQLRow     *fRow;
   TSQLRow     *fItemRow; 
   TSQLResult  *fResult;
-  TSQLResult  *fItemResult;     
+  TSQLResult  *fItemResult;	
   TQuery       fQuery;
   TQuery       fItemQuery;
   Int_t        tSysID;
@@ -195,7 +195,7 @@ void TMapUtils::ScanSystem(const char *tSystem){
     while((fRow=fResult->Next())){
       Int_t  tSubSysID = fQuery.IntOf(fRow->GetField(0));
       cout  << " SubSystem : " << fRow->GetField(1) 
-            << " (ID=" << tSubSysID  << ")  Description : " << fRow->GetField(2)  << endl ; 
+	    << " (ID=" << tSubSysID  << ")  Description : " << fRow->GetField(2)  << endl ; 
       
       fQuery.Reset();
       fQuery << "select * from Item where subsystemId=" << tSubSysID;
@@ -204,13 +204,13 @@ void TMapUtils::ScanSystem(const char *tSystem){
       
       fItemResult = db->Query(fQuery.Data());
       while((fItemRow=fItemResult->Next())){
-        cout << setw(15) << "   " 
-             << setw(12) << fItemRow->GetField(1) << " : " 
-             << setw(7) << fItemRow->GetField(0) <<" : " 
-             << setw(7) << fItemRow->GetField(3) << "  :  " 
-             << setw(7) << fItemRow->GetField(4) << "  :  " 
-             << setw(7) << fItemRow->GetField(5) << "  :  " 
-             << endl;
+	cout << setw(15) << "   " 
+	     << setw(12) << fItemRow->GetField(1) << " : " 
+	     << setw(7) << fItemRow->GetField(0) <<" : " 
+	     << setw(7) << fItemRow->GetField(3) << "  :  " 
+	     << setw(7) << fItemRow->GetField(4) << "  :  " 
+	     << setw(7) << fItemRow->GetField(5) << "  :  " 
+	     << endl;
       }
       cout << endl << endl;
     }
@@ -232,12 +232,12 @@ void  TMapUtils::PrintItemTable(TSQLServer *fbConn,TDBItem tMapItem, Int_t fcRun
   
   cout << endl << "----------------------------------------------------------------------------------------" << endl;
   fQuery << "select * from " << fItemValueVersion.Data() << " where itemId=" << tMapItem.fItemId 
-         << " AND " << fcRunNum << ">=minRun AND " <<  fcRunNum << "<=maxRun  ORDER BY time" ;
+	 << " AND " << fcRunNum << ">=minRun AND " <<  fcRunNum << "<=maxRun  ORDER BY time" ;
   fResult = fbConn->Query(fQuery.Data());
   for(int j = 0; j < fResult->GetRowCount(); j++){
     fRow = fResult->Next();
     for(int i = 0 ; i < fResult->GetFieldCount(); i++)
-         cout << "  " << fRow->GetField(i);
+	 cout << "  " << fRow->GetField(i);
     cout << endl;
   }
   cout << endl << "----------------------------------------------------------------------------------------" << endl;
@@ -274,18 +274,18 @@ void  TMapUtils::PrintItem(const char *tSystem, const char *tSubSystem,const cha
     
     cout << "--------------------- System found " << endl;
     fQuery << "select * from " << fItemValueVersion.Data() << " where itemId=" << flMapItem.fItemId 
-           << " AND minRun>=" << tMinRun << " AND maxRun<=" << tMaxRun;
+	   << " AND minRun>=" << tMinRun << " AND maxRun<=" << tMaxRun;
     if((fDebugMode&debugQUERYPREVIEW)>0) fQuery.Preview();
     fResult = db->Query(fQuery.Data());
     while((fRow=fResult->Next())){
       cout << setw(4) << "   "
-           << setw(12) << fRow->GetField(0) << " : " 
-           << setw(7) << fRow->GetField(2) <<" : " 
-           << setw(7) << fRow->GetField(3) << "  :  " 
-           << setw(7) << fRow->GetField(4) << "  :  " 
-           << setw(7) << fRow->GetField(5) << "  :  " 
-           << setw(7) << fRow->GetField(6) << "  :  " 
-           << endl;                
+	   << setw(12) << fRow->GetField(0) << " : " 
+	   << setw(7) << fRow->GetField(2) <<" : " 
+	   << setw(7) << fRow->GetField(3) << "  :  " 
+	   << setw(7) << fRow->GetField(4) << "  :  " 
+	   << setw(7) << fRow->GetField(5) << "  :  " 
+	   << setw(7) << fRow->GetField(6) << "  :  " 
+	   << endl;		
     }
   }
   delete db;
@@ -390,9 +390,9 @@ TSQLResult & TMapUtils::SelectValues(const char *fcSystem, const char *fcSubSyst
       dbConn = 0;      
       TQuery localErrMsg;
       localErrMsg << "SelectValues: Wrong Item Length. expected : " << flMapItem.fLength 
-                  << "  got : " << flResult->GetFieldCount()-1;
+		  << "  got : " << flResult->GetFieldCount()-1;
       throw localErrMsg;
-    }           
+    }       	
     
   } else {
     
@@ -616,7 +616,7 @@ Int_t    TMapUtils::GetSubSystemIDEx(TSQLServer *conn, int system_id, const char
   TQuery fQuery;
   
   fQuery << "select subsystemId from Subsystem where systemId=" 
-         << system_id << " AND subsystemName=\"" << subsystem_name <<"\"";
+	 << system_id << " AND subsystemName=\"" << subsystem_name <<"\"";
   
   if((fDebugMode&debugQUERYPREVIEW)>0) fQuery.Preview();
   
@@ -625,11 +625,11 @@ Int_t    TMapUtils::GetSubSystemIDEx(TSQLServer *conn, int system_id, const char
   if(fResult->GetRowCount()==1){
     fRow = fResult->Next();
     sscanf(fRow->GetField(0),"%d",&SubSystem_id);
-    //     cout << " System ID = " << fRow->GetField(0) << endl;
+    //	   cout << " System ID = " << fRow->GetField(0) << endl;
   } else {
     TQuery ErrMsg;
     ErrMsg << "==>> ERROR(TDBItemClass::GetSubSystemID): SubSystem not found. System ID = " << system_id 
-           << "  SubSystem Name : " << subsystem_name;
+	   << "  SubSystem Name : " << subsystem_name;
     throw ErrMsg;
   }
   
@@ -643,7 +643,7 @@ void    TMapUtils::GetItemEx(TSQLServer *conn, int subsystem_id, const char *ite
   TQuery       fQuery;
   
   fQuery << "select * from Item where subsystemID=" 
-         << subsystem_id << " AND itemName=\"" << item_name << "\"";
+	 << subsystem_id << " AND itemName=\"" << item_name << "\"";
   if((fDebugMode&debugQUERYPREVIEW)>0) fQuery.Preview();
   
   fResult = conn->Query(fQuery.Data());
@@ -661,7 +661,7 @@ void    TMapUtils::GetItemEx(TSQLServer *conn, int subsystem_id, const char *ite
   } else {
     TQuery ErrMsg;
     ErrMsg << "==>> ERROR(TDBItemClass::GetItemID): Item not found. SubSystem ID = " << subsystem_id 
-           << "  Item Name : " << item_name;
+	   << "  Item Name : " << item_name;
     throw ErrMsg;
   }
 }
@@ -729,8 +729,8 @@ void    TMapUtils::GetRunIndexEx(TSQLServer *fbConn, TDBItem tMapItem, Int_t fcR
     
   }
   fQuery << "SELECT RunIndexId,minRun,maxRun,itemId,itemValueId,officer,time,comment FROM " 
-         << fRun_INDEX_Table.Data() << " WHERE itemId=" << tMapItem.fItemId << " AND minRun<=" << fcRunNum 
-         << " AND maxRun>=" << fcRunNum << " ORDER BY time DESC LIMIT 1";
+	 << fRun_INDEX_Table.Data() << " WHERE itemId=" << tMapItem.fItemId << " AND minRun<=" << fcRunNum 
+	 << " AND maxRun>=" << fcRunNum << " ORDER BY time DESC LIMIT 1";
   
   if((fDebugMode&debugQUERYPREVIEW)>0) fQuery.Preview();
   
@@ -739,7 +739,7 @@ void    TMapUtils::GetRunIndexEx(TSQLServer *fbConn, TDBItem tMapItem, Int_t fcR
   if(fResult->GetRowCount()<=0){
     TQuery ErrMsg;
     ErrMsg << "==>> ERROR(TMapUtils::GetRunIndexID): Item Value not found. Item ID = " << tMapItem.fItemId 
-           << " Run : " << fcRunNum << "  Author : " << fcAuthor;
+	   << " Run : " << fcRunNum << "  Author : " << fcAuthor;
     throw ErrMsg;
   }
   
@@ -787,12 +787,12 @@ void    TMapUtils::SetDbVersion(const char *fVersion){
   if(strcmp(fVersion,"DEV") == 0){
     fItemValueVersion = "ItemValueDescription";
     if(fDebugMode&debugDEBUG)cout << "SetGbVersion: Set Database version to Development. Table \"" 
-                                  << fItemValueVersion.Data() <<"\" will be used" << endl;
+				  << fItemValueVersion.Data() <<"\" will be used" << endl;
   }
   if(strcmp(fVersion,"PROD") == 0){
     fItemValueVersion = "ProductionItemValueDescription";
     if(fDebugMode&debugDEBUG)cout << "SetGbVersion: Set Database version to Production. Table \"" 
-         << fItemValueVersion.Data() <<"\" will be used" << endl;
+	 << fItemValueVersion.Data() <<"\" will be used" << endl;
   }
 }
 

@@ -174,7 +174,7 @@ namespace ClasTool{
       kHe3_Id,
       kHe4_Id};
 
-  static const char fgParticle_Name[][13] =
+  static const char *fgParticle_Name[]=
     {
       "Unknown",
       "Electron",
@@ -190,7 +190,7 @@ namespace ClasTool{
       "Helium3",
       "Helium4" };      
 
-  static const char fgParticle_ShortName[][13] =
+  static const char *fgParticle_ShortName[]=
     {
       "Unkn",
       "Elec",
@@ -206,7 +206,7 @@ namespace ClasTool{
       "He3",
       "He4" };      
 
-  static const char fgParticle_Symbol[][13] =
+  static const char *fgParticle_Symbol[]=
     {
       "?",
       "e^{-}",

@@ -17,11 +17,11 @@
 #include "TDCPBClass.h"
 
 #include "clasbanks.h"
-
+#include "tree_str.h"
 
 // Function Prototype 
 void  Fill_DCPB_Bank(TDCPBClass *gcDCPB,DCPB *pDCPB , int nrow);
-
+void  Fill_DCPB_Bank(TDCPBClass *gcDCPB, tree_str* pDCPB, int nrow);
 
 void  Fill_DCPB_Bank(TDCPBClass *gcDCPB, DCPB *pDCPB , int nrow){
 gcDCPB->Sctr  = pDCPB->get_ScTr(nrow);
@@ -40,6 +40,22 @@ gcDCPB->Status  = pDCPB->get_Status(nrow);
 
 }
 
+void  Fill_DCPB_Bank(TDCPBClass *gcDCPB, tree_str* pDCPB, int nrow){
+gcDCPB->Sctr  = pDCPB->dc_sect[nrow]*100 + pDCPB->dc_trk[nrow];//100*sector+track_ID in *BTR 
+gcDCPB->X_sc  = pDCPB->dc_xsc [nrow];
+gcDCPB->Y_sc  = pDCPB->dc_ysc [nrow];
+gcDCPB->Z_sc  = pDCPB->dc_zsc [nrow];
+gcDCPB->Cx_sc  = pDCPB->dc_cxsc [nrow];
+gcDCPB->Cy_sc  = pDCPB->dc_cysc [nrow];
+gcDCPB->Cz_sc  = pDCPB->dc_czsc [nrow];
+gcDCPB->X_ec  = pDCPB->dc_vx [nrow]; // Mod(3/4/00) MWH - DCPB was changed by Stepan.
+gcDCPB->Y_ec  = pDCPB->dc_vy [nrow];
+gcDCPB->Z_ec  = pDCPB->dc_vz [nrow];
+gcDCPB->Th_cc  = pDCPB->dc_vr [nrow];
+gcDCPB->Chi2  = pDCPB->dc_c2 [nrow];
+gcDCPB->Status  = pDCPB->dc_stat[nrow];
+
+}
 
 
 ////////////////////////////////////////////////////////////////////////////////////////

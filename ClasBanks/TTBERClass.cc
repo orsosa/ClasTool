@@ -1,4 +1,4 @@
-// @(#)ClasTool/ClasBanks:$Name:  $:$Id: TTBERClass.cc,v 1.5 2007/03/01 22:26:59 holtrop Exp $
+// @(#)ClasTool/ClasBanks:$Name:  $:$Id: TTBERClass.cc,v 1.6 2011/02/09 21:42:29 cnepali Exp $
 // Author:  Maurik Holtrop <http://www.physics.unh.edu/~maurik>
 
 //____________________ 
@@ -53,7 +53,7 @@ TTBERClass::TTBERClass(TTBERClass *TmpTBER)
 }
 
     
-TMatrixF TTBERClass::Get_ErrMatrix(){
+TMatrixD TTBERClass::Get_ErrMatrix(){
   //
   // Creates a TMatrixF, fills it with the error matrix
   // and then returns a reference to the new matrix.
@@ -63,12 +63,43 @@ TMatrixF TTBERClass::Get_ErrMatrix(){
   // other forms of Get_ErrMatrix which fill but don't create
   // an new Matrix!
   //  
-  TMatrixF c(5,5);
-  Get_ErrMatrix(&c);
-  return(c);
+//  TMatrixD c(5,5);
+	TMatrixD c(3,3);  
+
+  c(0,0) = c11;
+  c(0,1) = c12;
+  c(0,2) = c13;
+//  c(0,3) = c14;
+//  c(0,4) = c15;
+
+  c(1,0) = c12;
+  c(1,1) = c22;
+  c(1,2) = c23;
+//  c(1,3) = c24;
+//  c(1,4) = c25;
+
+  c(2,0) = c13;
+  c(2,1) = c23;
+  c(2,2) = c33;
+//  c(2,3) = c34;
+//  c(2,4) = c35;
+
+/*  c(3,0) = c14;
+  c(3,1) = c24;
+  c(3,2) = c34;
+  c(3,3) = c44;
+  c(3,4) = c45;
+
+  c(4,0) = c15;
+  c(4,1) = c25;
+  c(4,2) = c35;
+  c(4,3) = c45;
+  c(4,4) = c55; */
+//  Get_ErrMatrix(&c);
+  return c;
 }
 
-void TTBERClass::Get_ErrMatrix(TMatrixF *f){
+void TTBERClass::Get_ErrMatrix(TMatrixD *f){
   // Fill the matrix being pointed to with the tracking 
   // error information. Note that locally this information
   // is NOT stored as a Matrix, to save storage space.
@@ -105,7 +136,7 @@ void TTBERClass::Get_ErrMatrix(TMatrixF *f){
   M(4,4) = c55;
 }
 
-void TTBERClass::Get_ErrMatrix(TMatrixF &f){
+void TTBERClass::Get_ErrMatrix(TMatrixD &f){
   // Fill the matrix being referenced to with the tracking 
   // error information. Note that locally this information
   // is NOT stored as a Matrix, to save storage space.
@@ -132,7 +163,7 @@ void TTBERClass::Print(void)
   cout << "layinfo1   = " << layinfo1<< endl;
   cout << "layinfo2   = " << layinfo2<< endl;
   cout << "Error Matrix:" << endl;
-  TMatrixF c(5,5);
+  TMatrixD c(5,5);
   Get_ErrMatrix(&c);
   c.Print();
 }

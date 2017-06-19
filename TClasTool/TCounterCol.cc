@@ -77,18 +77,18 @@ void TCounterCol::Reset(){
 }
 
 void TCounterCol::SetCounterTitles(void){
-    //
-    // Set the Titles of each counter to reflect the
-    // current count.
-    // This is called before writing this object to file
-    // so that an "ls" or "browse" on the object reflects
-    // the correct numbers.
-    //
-    TIter next(this);
-    TCounter *cc;
-    while ((cc = (TCounter *) next())) {
-        cc->SetTitle();
-    }
+  //
+  // Set the Titles of each counter to reflect the
+  // current count.
+  // This is called before writing this object to file
+  // so that an "ls" or "browse" on the object reflects
+  // the correct numbers.
+  //
+  TIter next(this);
+  TCounter *cc;
+  while(cc=(TCounter *)next()){
+    cc->SetTitle();
+  }
 }
 
 void TCounterCol::Print(){

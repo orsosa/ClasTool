@@ -58,7 +58,6 @@ const Int_t k__SCALER_BUFSIZE__ = 1024;
 const Int_t k__COMPRESS__ = 9;
 const Int_t k__MAXFILESIZE__ = 2000000000;  // Max file is about 2Gig.
 
-
 class TNT10Reader : public TChain, public TVirtualReader{
   //
   // WOA, Multiple inheritance, ain't that cool C++ !
